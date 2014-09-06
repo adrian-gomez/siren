@@ -4,7 +4,7 @@ smtp:
   domain:               siren.com
   authentication:       plain
   enable_starttls_auto: true
-  user:                 [GMAIL-USER]
+  user_name:            [GMAIL-USER]
   password:             [GMAIL-PASSWORD]
 
 mail:

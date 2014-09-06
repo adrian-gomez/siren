@@ -1,6 +1,6 @@
 class ReservationsController < ApplicationController
 
-  before_action :set_reservation, only: [:confirm, :confirmation]
+  before_action :set_reservation, only: [:confirm, :confirmation, :customize, :customization, :show]
 
   # GET /reservations/new
   def new
@@ -37,6 +37,12 @@ class ReservationsController < ApplicationController
   def customize
 
   end
+  # PUT /reservations/:id/customization
+  def customization
+    @reservation.update(customize_reservation_params)
+
+    redirect_to @reservation, notice: t('reservation.completed')
+  end
 
   private
 
@@ -51,6 +57,10 @@ class ReservationsController < ApplicationController
   def confirm_reservation_params
     params.require(:reservation).permit(:first_name, :last_name,
                                         :phone_number).merge(user_ip: request.remote_ip)
+  end
+
+  def customize_reservation_params
+    params.require(:reservation).permit(:housing_date, :dark_wish, :amenity_ids => [])
   end
 
 end

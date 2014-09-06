@@ -80,11 +80,23 @@ describe ReservationsController do
 
   end
 
+  describe 'GET confirm' do
+
+    let(:reservation) { create(:reservation) }
+
+    it 'assigns the reservation as @reservation' do
+      get :confirm, { id: reservation.to_param }
+
+      expect(assigns(:reservation)).to eq(reservation)
+    end
+
+  end
+
   describe 'PUT confirmation' do
 
     let(:reservation) { create(:reservation) }
 
-    let(:new_attributes) { { first_name: 'Coyote', last_name: 'Acme', phone_number: '1234567890'} }
+    let(:new_attributes) { { first_name: 'Coyote', last_name: 'Acme', phone_number: '1234567890' } }
 
     context 'with valid params' do
       it 'updates the reservation' do
@@ -137,6 +149,59 @@ describe ReservationsController do
 
         expect(response).to render_template(:confirm)
       end
+    end
+
+  end
+
+  describe 'GET customize' do
+
+    let(:reservation) { create(:reservation) }
+
+    it 'assigns the reservation as @reservation' do
+      get :customize, { id: reservation.to_param }
+
+      expect(assigns(:reservation)).to eq(reservation)
+    end
+
+  end
+
+  describe 'PUT customization' do
+
+    let(:reservation) { create(:reservation, :confirmed) }
+
+    let(:new_attributes) { { dark_wish: 'Catch the Road Runner' } }
+
+    context 'with valid params' do
+      it 'updates the reservation' do
+        expect {
+          put :customization, { id: reservation.to_param, :reservation => new_attributes }
+          reservation.reload
+        }.to change(reservation, :dark_wish).to(new_attributes[:dark_wish])
+      end
+
+      it 'redirects to the reservation success' do
+        put :customization, { id: reservation.to_param, :reservation => new_attributes }
+
+        expect(response).to redirect_to(reservation)
+      end
+
+      it 'adds success flash message' do
+        put :customization, { id: reservation.to_param, :reservation => new_attributes }
+
+        expect(flash[:notice]).to eq(I18n.t('reservation.completed'))
+      end
+    end
+
+  end
+
+  describe 'GET show' do
+
+    let(:reservation) { create(:reservation) }
+
+    it 'assigns the reservation as @reservation' do
+      get :show, { id: reservation.to_param }
+
+      expect(assigns(:reservation)).to eq(reservation)
     end
 
   end

@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140906210601) do
+ActiveRecord::Schema.define(version: 20140907000142) do
+
+  create_table "amenities", force: true do |t|
+    t.string "description"
+  end
+
+  create_table "amenities_reservations", force: true do |t|
+    t.integer "amenity_id"
+    t.integer "reservation_id"
+  end
 
   create_table "reservations", force: true do |t|
     t.string   "email",        null: false
@@ -21,6 +30,8 @@ ActiveRecord::Schema.define(version: 20140906210601) do
     t.string   "last_name"
     t.integer  "phone_number"
     t.string   "user_ip"
+    t.date     "housing_date"
+    t.string   "dark_wish"
   end
 
 end

@@ -1,1 +1,18 @@
-TODO
+%h1= t('reservation.customize')
+
+= form_for(@reservation, url: customization_reservation_path(@reservation), method: :put) do |f|
+  = render 'application/errors_explanation', model_name: :reservation, errors: @reservation.errors
+
+  .field
+    = f.label :housing_date
+    = f.date_select :housing_date
+
+  .field
+    = f.label :dark_wish
+    = f.text_area :dark_wish
+
+  .field
+    = f.collection_check_boxes :amenity_ids, Amenity.all, :id, :description
+
+  .actions
+    = f.submit

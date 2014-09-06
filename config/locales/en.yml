@@ -10,6 +10,8 @@ en:
       Check the given email for a link to confirm your reservation.
     confirm: Confirm Reservation
     confirmed: Reservation was successfully confirmed.
+    customize: Customize Reservation
+    completed: Reservation completed.
 
   mailers:
     reservation:

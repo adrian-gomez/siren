@@ -1,4 +1,4 @@
-%h1= t('reservation.new')
+%h1= t('reservation.confirm')
 
 = form_for(@reservation, url: confirmation_reservation_path(@reservation), method: :put) do |f|
   = render 'application/errors_explanation', model_name: :reservation, errors: @reservation.errors
