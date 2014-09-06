@@ -12,6 +12,14 @@ describe ReservationsController do
       expect(:post => '/reservations').to route_to('reservations#create')
     end
 
+    it 'routes to #confirm' do
+      expect(:get => '/reservations/1/confirm').to route_to('reservations#confirm', id: '1')
+    end
+
+    it 'routes to #confirmation' do
+      expect(:put => '/reservations/1/confirmation').to route_to('reservations#confirmation', id: '1')
+    end
+
   end
 
 end

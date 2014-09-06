@@ -1,1 +1,19 @@
-TODO
+%h1= t('reservation.new')
+
+= form_for(@reservation, url: confirmation_reservation_path(@reservation), method: :put) do |f|
+  = render 'application/errors_explanation', model_name: :reservation, errors: @reservation.errors
+
+  .field
+    = f.label :first_name
+    = f.text_field :first_name
+
+  .field
+    = f.label :last_name
+    = f.text_field :last_name
+
+  .field
+    = f.label :phone_number
+    = f.text_field :phone_number
+
+  .actions
+    = f.submit t('reservation.confirm')

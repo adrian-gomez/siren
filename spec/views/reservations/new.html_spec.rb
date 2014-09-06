@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 describe 'reservations/new' do
-  before do
-    assign(:reservation, build(:reservation))
-  end
+
+  before { assign(:reservation, build(:reservation)) }
 
   it 'renders new reservation form' do
     render
@@ -13,4 +12,5 @@ describe 'reservations/new' do
       assert_select 'input[type=?]', 'submit'
     end
   end
+
 end

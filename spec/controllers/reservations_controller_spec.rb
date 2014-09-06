@@ -2,10 +2,6 @@ require 'rails_helper'
 
 describe ReservationsController do
 
-  let(:valid_attributes) { attributes_for(:reservation) }
-
-  let(:invalid_attributes) { { :email => 'im_not_a_valid_email.org' }}
-
   describe 'GET new' do
 
     it 'assigns a new reservation as @reservation' do
@@ -19,6 +15,9 @@ describe ReservationsController do
   describe 'POST create' do
 
     context 'with valid params' do
+
+      let(:valid_attributes) { attributes_for(:reservation) }
+
       it 'creates a new Reservation' do
         expect {
           post :create, { :reservation => valid_attributes }
@@ -39,7 +38,7 @@ describe ReservationsController do
         expect(response).to redirect_to(new_reservation_path)
       end
 
-      it 'adds success flash message' do
+      it 'adds a success flash message' do
         post :create, { :reservation => valid_attributes }
 
         expect(flash[:notice]).to eq(I18n.t('reservation.created'))
@@ -57,6 +56,9 @@ describe ReservationsController do
     end
 
     context 'with invalid params' do
+
+      let(:invalid_attributes) { { :email => 'im_not_a_valid_email.org' }}
+
       it 'assigns a newly created but unsaved reservation as @reservation' do
         post :create, { :reservation => invalid_attributes }
 
@@ -73,6 +75,67 @@ describe ReservationsController do
         post :create, { :reservation => invalid_attributes }
 
         expect(response).to render_template(:new)
+      end
+    end
+
+  end
+
+  describe 'PUT confirmation' do
+
+    let(:reservation) { create(:reservation) }
+
+    let(:new_attributes) { { first_name: 'Coyote', last_name: 'Acme', phone_number: '1234567890'} }
+
+    context 'with valid params' do
+      it 'updates the reservation' do
+        expect {
+          put :confirmation, { id: reservation.to_param, :reservation => new_attributes }
+          reservation.reload
+        }.to change(reservation, :first_name).to(new_attributes[:first_name])
+      end
+
+      it 'stores the user ip in the reservation' do
+        allow(request).to receive(:remote_ip).and_return('190.165.218.56')
+
+        expect {
+          put :confirmation, { id: reservation.to_param, :reservation => new_attributes }
+          reservation.reload
+        }.to change(reservation, :user_ip).to('190.165.218.56')
+      end
+
+      it 'redirects to the confirmation customization' do
+        put :confirmation, { id: reservation.to_param, :reservation => new_attributes }
+
+        expect(response).to redirect_to(customize_reservation_path(reservation))
+      end
+
+      it 'adds success flash message' do
+        put :confirmation, { id: reservation.to_param, :reservation => new_attributes }
+
+        expect(flash[:notice]).to eq(I18n.t('reservation.confirmed'))
+      end
+    end
+
+    context 'with invalid params' do
+
+      before { new_attributes.delete(:last_name) }
+
+      it 'assigns the reservation as @reservation' do
+        put :confirmation, { id: reservation.to_param, :reservation => new_attributes }
+
+        expect(assigns(:reservation)).to eq(reservation)
+      end
+
+      it 'keeps the given params' do
+        put :confirmation, { id: reservation.to_param, :reservation => new_attributes }
+
+        expect(assigns(:reservation).first_name).to eq(new_attributes[:first_name])
+      end
+
+      it 're-renders the confirm template' do
+        put :confirmation, { id: reservation.to_param, :reservation => new_attributes }
+
+        expect(response).to render_template(:confirm)
       end
     end
 
