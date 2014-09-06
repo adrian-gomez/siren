@@ -20,4 +20,20 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  application:
+    back: Back
+    errors_in_model: '%{error_string} prohibited this %{model_name} from being saved:'
+
+  reservation:
+    new: New reservation
+    created: |
+      Reservation was successfully created.
+      Check the given email for a link to confirm your reservation.
+
+  mailers:
+    reservation:
+      confirm:  Confirm your reservation.
+
+      confirmation:
+        tanks: Thanks for requesting a reservation!
+        click_confirmation_link: 'Click on the link to confirm your reservation:'

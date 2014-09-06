@@ -9,3 +9,5 @@
 /tmp
 
 /coverage
+
+/config/configuration.yml

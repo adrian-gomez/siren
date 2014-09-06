@@ -1,0 +1,7 @@
+-# Partial used for render flash notifications.
+- notices = Array(flash[:notice])
+- if notices.any?
+  .notice
+    %ul
+      - notices.each do |notice|
+        %li= notice

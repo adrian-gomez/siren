@@ -1,0 +1,12 @@
+-# Partial used to render model error explanations.
+-#
+-# @param [String] model_name
+-# @param [Array<ActiveModel::Errors>] errors
+- if errors.any?
+  #error_explanation
+    %h2= t('application.errors_in_model', error_string: pluralize(errors.count, 'error'),
+                                          model_name: model_name)
+
+    %ul
+      - errors.full_messages.each do |message|
+        %li= message

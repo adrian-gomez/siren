@@ -1,0 +1,1 @@
+CONFIGURATION = Yew.load('config/configuration.yml')

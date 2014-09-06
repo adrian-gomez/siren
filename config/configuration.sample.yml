@@ -1,0 +1,12 @@
+smtp:
+  address:              smtp.gmail.com
+  port:                 587
+  domain:               siren.com
+  authentication:       plain
+  enable_starttls_auto: true
+  user:                 [GMAIL-USER]
+  password:             [GMAIL-PASSWORD]
+
+mail:
+  sender: siren@acme.com
+  host: localhost:3000

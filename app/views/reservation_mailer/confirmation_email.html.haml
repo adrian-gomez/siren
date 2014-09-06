@@ -1,0 +1,11 @@
+!!!
+%html
+  %head
+    %meta{ content: 'text/html; charset=UTF-8', :'http-equiv' => 'Content-Type' }
+
+  %body
+    %p= t('mailers.reservation.confirmation.tanks')
+
+    %p
+      = t('mailers.reservation.confirmation.click_confirmation_link')
+      = confirm_reservation_url(@reservation)

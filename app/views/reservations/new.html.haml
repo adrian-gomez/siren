@@ -1,0 +1,11 @@
+%h1= t('reservation.new')
+
+= form_for(@reservation) do |f|
+  = render 'application/errors_explanation', model_name: :reservation, errors: @reservation.errors
+
+  .field
+    = f.label :email
+    = f.text_field :email
+
+  .actions
+    = f.submit
