@@ -1,6 +1,6 @@
 class ReservationsController < ApplicationController
 
-  before_action :set_reservation, only: [:confirm, :confirmation, :customize, :customization, :show]
+  before_action :set_reservation, only: [:confirm, :confirmation, :customize, :customization]
 
   # GET /reservations/new
   def new
@@ -40,8 +40,10 @@ class ReservationsController < ApplicationController
   # PUT /reservations/:id/customization
   def customization
     @reservation.update(customize_reservation_params)
+    ReservationMailer.completed_email(@reservation).deliver
+    ReservationMailer.scheduled_email(@reservation).deliver
 
-    redirect_to @reservation, notice: t('reservation.completed')
+    redirect_to new_reservation_path, notice: t('reservation.completed')
   end
 
   private

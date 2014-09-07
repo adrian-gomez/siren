@@ -16,4 +16,7 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.include FactoryGirl::Syntax::Methods
+
+  # Clear email deliveries for every spec not just for mailers.
+  config.before { ActionMailer::Base.deliveries = [] }
 end

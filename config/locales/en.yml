@@ -2,6 +2,7 @@ en:
   application:
     back: Back
     errors_in_model: '%{error_string} prohibited this %{model_name} from being saved:'
+    not_available: N/A
 
   reservation:
     new: New reservation
@@ -16,7 +17,17 @@ en:
   mailers:
     reservation:
       confirm:  Confirm your reservation.
+      completed:  Reservation completed.
+      scheduled: Time Share Scheduled
 
       confirmation:
         tanks: Thanks for requesting a reservation!
         click_confirmation_link: 'Click on the link to confirm your reservation:'
+
+      first_name: 'First Name: %{first_name}'
+      last_name: 'Last Name: %{last_name}'
+      phone_number: 'Phone Number: %{phone_number}'
+      user_ip: 'User IP: %`{user_ip}'
+      housing_date: 'Housing Date: %{housing_date}'
+      dark_wish: 'Dark Wish: %{dark_wish}'
+      amenities: 'Amenities: %{amenities}'

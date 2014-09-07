@@ -30,6 +30,7 @@ describe ReservationsController do
         email = ActionMailer::Base.deliveries.last
 
         expect(email.to).to include(valid_attributes[:email])
+        expect(email.subject).to eq(I18n.t('mailers.reservation.confirm'))
       end
 
       it 'redirects to a new reservation' do
@@ -179,10 +180,26 @@ describe ReservationsController do
         }.to change(reservation, :dark_wish).to(new_attributes[:dark_wish])
       end
 
-      it 'redirects to the reservation success' do
+      it 'sends a confirmation email' do
         put :customization, { id: reservation.to_param, :reservation => new_attributes }
 
-        expect(response).to redirect_to(reservation)
+        subjects = ActionMailer::Base.deliveries.map(&:subject)
+
+        expect(subjects).to include(I18n.t('mailers.reservation.completed'))
+      end
+
+      it 'sends a reservation scheduled email' do
+        put :customization, { id: reservation.to_param, :reservation => new_attributes }
+
+        subjects = ActionMailer::Base.deliveries.map(&:subject)
+
+        expect(subjects).to include(I18n.t('mailers.reservation.scheduled'))
+      end
+
+      it 'redirects to a new reservation' do
+        put :customization, { id: reservation.to_param, :reservation => new_attributes }
+
+        expect(response).to redirect_to(new_reservation_path)
       end
 
       it 'adds success flash message' do
@@ -190,18 +207,6 @@ describe ReservationsController do
 
         expect(flash[:notice]).to eq(I18n.t('reservation.completed'))
       end
-    end
-
-  end
-
-  describe 'GET show' do
-
-    let(:reservation) { create(:reservation) }
-
-    it 'assigns the reservation as @reservation' do
-      get :show, { id: reservation.to_param }
-
-      expect(assigns(:reservation)).to eq(reservation)
     end
 
   end

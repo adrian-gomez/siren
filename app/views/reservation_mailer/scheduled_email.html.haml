@@ -1,0 +1,13 @@
+!!!
+%html
+  %head
+    %meta{ content: 'text/html; charset=UTF-8', :'http-equiv' => 'Content-Type' }
+
+  %body
+    %p= t('mailers.reservation.first_name', first_name: @reservation.first_name)
+    %p= t('mailers.reservation.last_name', last_name: @reservation.last_name)
+    %p= t('mailers.reservation.phone_number', phone_number: @reservation.phone_number)
+    %p= t('mailers.reservation.user_ip', user_ip: @reservation.user_ip)
+    %p= t('mailers.reservation.housing_date', housing_date: safe_l(@reservation.housing_date))
+    %p= t('mailers.reservation.dark_wish', dark_wish: @reservation.dark_wish)
+    %p= t('mailers.reservation.amenities', amenities: amenities_to_sentence(@reservation.amenities))

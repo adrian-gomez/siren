@@ -10,3 +10,5 @@ smtp:
 mail:
   sender: siren@acme.com
   host: localhost:3000
+  reservation_scheduled:
+    receiver: tours@example.com
