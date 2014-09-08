@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140907000142) do
+ActiveRecord::Schema.define(version: 20140908000642) do
 
   create_table "amenities", force: true do |t|
     t.string "description"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20140907000142) do
     t.string   "user_ip"
     t.date     "housing_date"
     t.string   "dark_wish"
+    t.integer  "rating"
   end
 
 end

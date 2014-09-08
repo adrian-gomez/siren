@@ -1,0 +1,13 @@
+= form_for(reservation, url: rating_reservation_path(reservation), method: :put) do |f|
+  = render 'application/errors_explanation', model_name: :reservation, errors: reservation.errors
+
+  .field
+    %strong
+      = f.label :rating
+
+    - 1.upto(Reservation::MAX_RATING) do |i|
+      = f.radio_button(:rating, i)
+      = label_tag("reservation_rating_#{i}", i)
+
+  .actions
+    = f.submit t('reservation.rate')

@@ -1,6 +1,7 @@
 class ReservationsController < ApplicationController
 
-  before_action :set_reservation, only: [:confirm, :confirmation, :customize, :customization]
+  before_action :set_reservation, only: [:confirm, :confirmation, :customize, :customization, :rate,
+                                         :rating]
 
   # GET /reservations/new
   def new
@@ -21,7 +22,7 @@ class ReservationsController < ApplicationController
 
   # GET /reservations/:id/confirm
   def confirm
-
+    redirect_to rate_reservation_path(@reservation) if @reservation.confirmed?
   end
 
   # PUT /reservations/:id/confirmation
@@ -37,6 +38,7 @@ class ReservationsController < ApplicationController
   def customize
 
   end
+
   # PUT /reservations/:id/customization
   def customization
     @reservation.update(customize_reservation_params)
@@ -44,6 +46,22 @@ class ReservationsController < ApplicationController
     ReservationMailer.scheduled_email(@reservation).deliver
 
     redirect_to new_reservation_path, notice: t('reservation.completed')
+  end
+
+  # GET /reservations/:id/rate
+  def rate
+
+  end
+
+  # PUT /reservations/:id/rating
+  def rating
+    @reservation.attributes = rate_reservation_params[:reservation]
+
+    if @reservation.save(context: :rate)
+      redirect_to rate_reservation_path(@reservation), notice: t('reservation.rated')
+    else
+      render :rate
+    end
   end
 
   private
@@ -63,6 +81,11 @@ class ReservationsController < ApplicationController
 
   def customize_reservation_params
     params.require(:reservation).permit(:housing_date, :dark_wish, :amenity_ids => [])
+  end
+
+  def rate_reservation_params
+    params[:reservation] ||= {}
+    params.permit(:reservation => :rating)
   end
 
 end

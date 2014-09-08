@@ -1,0 +1,39 @@
+%h1= t('reservation.rate')
+
+.field
+  %strong
+    = label_tag :first_name
+  = @reservation.first_name
+
+.field
+  %strong
+    = label_tag :last_name
+  = @reservation.last_name
+
+.field
+  %strong
+    = label_tag :phone_number
+  = @reservation.phone_number
+
+.field
+  %strong
+    = label_tag :housing_date
+  = safe_l(@reservation.housing_date)
+
+.field
+  %strong
+    = label_tag :dark_wish
+  = @reservation.dark_wish
+
+.field
+  %strong
+    = label_tag :amenities
+  = amenities_to_sentence(@reservation.amenities)
+
+- if @reservation.rated?
+  .field
+    %strong
+      = label_tag :rating
+    = @reservation.rating
+- else
+  = render 'rate_form', reservation: @reservation

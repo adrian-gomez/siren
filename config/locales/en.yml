@@ -12,12 +12,14 @@ en:
     confirm: Confirm Reservation
     confirmed: Reservation was successfully confirmed.
     customize: Customize Reservation
-    completed: Reservation completed.
+    completed: Reservation Completed.
+    rate: Rate Reservation
+    rated: Your rate has been submited.
 
   mailers:
     reservation:
-      confirm:  Confirm your reservation.
-      completed:  Reservation completed.
+      confirm:  Confirm Your Reservation.
+      completed:  Reservation Completed.
       scheduled: Time Share Scheduled
 
       confirmation:
@@ -27,7 +29,7 @@ en:
       first_name: 'First Name: %{first_name}'
       last_name: 'Last Name: %{last_name}'
       phone_number: 'Phone Number: %{phone_number}'
-      user_ip: 'User IP: %`{user_ip}'
+      user_ip: 'User IP: %{user_ip}'
       housing_date: 'Housing Date: %{housing_date}'
       dark_wish: 'Dark Wish: %{dark_wish}'
       amenities: 'Amenities: %{amenities}'

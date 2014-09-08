@@ -6,6 +6,9 @@ Rails.application.routes.draw do
 
       get :customize
       put :customization
+
+      get :rate
+      put :rating
     end
   end
 

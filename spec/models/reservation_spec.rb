@@ -82,6 +82,54 @@ describe Reservation do
         end
       end
 
+      context 'when updating the rating' do
+        context 'when rating is not a number' do
+          before { new_attributes[:rating] = 'a' }
+
+          it 'adds an error for rating' do
+            reservation.attributes = new_attributes
+            reservation.valid?(:rate)
+
+            expect(reservation.errors).to include(:rating)
+          end
+        end
+
+        context 'when rating is less than 1' do
+          before { new_attributes[:rating] = 0 }
+
+          it 'adds an error for rating' do
+            reservation.attributes = new_attributes
+            reservation.valid?(:rate)
+
+            expect(reservation.errors).to include(:rating)
+          end
+        end
+
+        context 'when rating is more than Reservation::MAX_RATING' do
+          before { new_attributes[:rating] = Reservation::MAX_RATING  + 1 }
+
+          it 'adds an error for rating' do
+            reservation.attributes = new_attributes
+            reservation.valid?(:rate)
+
+            expect(reservation.errors).to include(:rating)
+          end
+        end
+      end
+
+      context 'when the reservation has been rated' do
+        let(:reservation) { create(:reservation, :rated) }
+
+        context 'when a new rating is given' do
+          before { new_attributes[:rating] = 1 }
+
+          it 'adds an error for rating' do
+            reservation.update(new_attributes)
+
+            expect(reservation.errors).to include(:rating)
+          end
+        end
+      end
     end
 
   end

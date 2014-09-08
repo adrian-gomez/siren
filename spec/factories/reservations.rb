@@ -16,5 +16,9 @@ FactoryGirl.define do
       dark_wish     'Catch the Road Runner'
     end
 
+    trait :rated do
+      rating        { rand(1..5) }
+    end
+
   end
 end

@@ -30,6 +30,14 @@ describe ReservationsController do
                                                                   id: '1')
     end
 
+    it 'routes to #rate' do
+      expect(:get => '/reservations/1/rate').to route_to('reservations#rate', id: '1')
+    end
+
+    it 'routes to #rating' do
+      expect(:put => '/reservations/1/rating').to route_to('reservations#rating', id: '1')
+    end
+
   end
 
 end

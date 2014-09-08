@@ -91,6 +91,15 @@ describe ReservationsController do
       expect(assigns(:reservation)).to eq(reservation)
     end
 
+    context 'when the reservation is confirmed' do
+      let(:reservation) { create(:reservation, :confirmed) }
+
+      it 'assigns the reservation as @reservation' do
+        get :confirm, { id: reservation.to_param }
+
+        expect(response).to redirect_to(rate_reservation_path(reservation))
+      end
+    end
   end
 
   describe 'PUT confirmation' do
@@ -130,7 +139,6 @@ describe ReservationsController do
     end
 
     context 'with invalid params' do
-
       before { new_attributes.delete(:last_name) }
 
       it 'assigns the reservation as @reservation' do
@@ -172,40 +180,93 @@ describe ReservationsController do
 
     let(:new_attributes) { { dark_wish: 'Catch the Road Runner' } }
 
+    it 'updates the reservation' do
+      expect {
+        put :customization, { id: reservation.to_param, :reservation => new_attributes }
+        reservation.reload
+      }.to change(reservation, :dark_wish).to(new_attributes[:dark_wish])
+    end
+
+    it 'sends a confirmation email' do
+      put :customization, { id: reservation.to_param, :reservation => new_attributes }
+
+      subjects = ActionMailer::Base.deliveries.map(&:subject)
+
+      expect(subjects).to include(I18n.t('mailers.reservation.completed'))
+    end
+
+    it 'sends a reservation scheduled email' do
+      put :customization, { id: reservation.to_param, :reservation => new_attributes }
+
+      subjects = ActionMailer::Base.deliveries.map(&:subject)
+
+      expect(subjects).to include(I18n.t('mailers.reservation.scheduled'))
+    end
+
+    it 'redirects to a new reservation' do
+      put :customization, { id: reservation.to_param, :reservation => new_attributes }
+
+      expect(response).to redirect_to(new_reservation_path)
+    end
+
+    it 'adds success flash message' do
+      put :customization, { id: reservation.to_param, :reservation => new_attributes }
+
+      expect(flash[:notice]).to eq(I18n.t('reservation.completed'))
+    end
+
+  end
+
+  describe 'GET rate' do
+
+    let(:reservation) { create(:reservation) }
+
+    it 'assigns the reservation as @reservation' do
+      get :rate, { id: reservation.to_param }
+
+      expect(assigns(:reservation)).to eq(reservation)
+    end
+
+  end
+
+  describe 'PUT rating' do
+
+    let(:reservation) { create(:reservation, :confirmed) }
+
+    let(:new_attributes) { { rating: 3 } }
+
     context 'with valid params' do
       it 'updates the reservation' do
         expect {
-          put :customization, { id: reservation.to_param, :reservation => new_attributes }
+          put :rating, { id: reservation.to_param, :reservation => new_attributes }
           reservation.reload
-        }.to change(reservation, :dark_wish).to(new_attributes[:dark_wish])
+        }.to change(reservation, :rating).to(new_attributes[:rating])
       end
 
-      it 'sends a confirmation email' do
-        put :customization, { id: reservation.to_param, :reservation => new_attributes }
+      it 'redirects to rate reservation' do
+        put :rating, { id: reservation.to_param, :reservation => new_attributes }
 
-        subjects = ActionMailer::Base.deliveries.map(&:subject)
-
-        expect(subjects).to include(I18n.t('mailers.reservation.completed'))
-      end
-
-      it 'sends a reservation scheduled email' do
-        put :customization, { id: reservation.to_param, :reservation => new_attributes }
-
-        subjects = ActionMailer::Base.deliveries.map(&:subject)
-
-        expect(subjects).to include(I18n.t('mailers.reservation.scheduled'))
-      end
-
-      it 'redirects to a new reservation' do
-        put :customization, { id: reservation.to_param, :reservation => new_attributes }
-
-        expect(response).to redirect_to(new_reservation_path)
+        expect(response).to redirect_to(rate_reservation_path(reservation))
       end
 
       it 'adds success flash message' do
-        put :customization, { id: reservation.to_param, :reservation => new_attributes }
+        put :rating, { id: reservation.to_param, :reservation => new_attributes }
 
-        expect(flash[:notice]).to eq(I18n.t('reservation.completed'))
+        expect(flash[:notice]).to eq(I18n.t('reservation.rated'))
+      end
+    end
+
+    context 'with invalid params' do
+      it 'assigns the reservation as @reservation' do
+        put :rating, { id: reservation.to_param }
+
+        expect(assigns(:reservation)).to eq(reservation)
+      end
+
+      it 're-renders the rate template' do
+        put :rating, { id: reservation.to_param }
+
+        expect(response).to render_template(:rate)
       end
     end
 
