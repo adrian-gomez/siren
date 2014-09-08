@@ -68,6 +68,8 @@ class ReservationsController < ApplicationController
 
   def set_reservation
     @reservation = Reservation.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to new_reservation_path
   end
 
   def create_reservation_params

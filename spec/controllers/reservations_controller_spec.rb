@@ -100,6 +100,15 @@ describe ReservationsController do
         expect(response).to redirect_to(rate_reservation_path(reservation))
       end
     end
+
+    context 'when an nonexistent reservation' do
+      it 'redirects to new reservation' do
+        get :confirm, { id: -1 }
+
+        expect(response).to redirect_to(new_reservation_path)
+      end
+    end
+
   end
 
   describe 'PUT confirmation' do
@@ -160,6 +169,14 @@ describe ReservationsController do
       end
     end
 
+    context 'when an nonexistent reservation' do
+      it 'redirects to new reservation' do
+        put :confirmation, { id: -1, :reservation => new_attributes }
+
+        expect(response).to redirect_to(new_reservation_path)
+      end
+    end
+
   end
 
   describe 'GET customize' do
@@ -170,6 +187,14 @@ describe ReservationsController do
       get :customize, { id: reservation.to_param }
 
       expect(assigns(:reservation)).to eq(reservation)
+    end
+
+    context 'when an nonexistent reservation' do
+      it 'redirects to new reservation' do
+        get :customize, { id: -1 }
+
+        expect(response).to redirect_to(new_reservation_path)
+      end
     end
 
   end
@@ -215,6 +240,14 @@ describe ReservationsController do
       expect(flash[:notice]).to eq(I18n.t('reservation.completed'))
     end
 
+    context 'when an nonexistent reservation' do
+      it 'redirects to new reservation' do
+        put :customization, { id: -1, :reservation => new_attributes }
+
+        expect(response).to redirect_to(new_reservation_path)
+      end
+    end
+
   end
 
   describe 'GET rate' do
@@ -225,6 +258,14 @@ describe ReservationsController do
       get :rate, { id: reservation.to_param }
 
       expect(assigns(:reservation)).to eq(reservation)
+    end
+
+    context 'when an nonexistent reservation' do
+      it 'redirects to new reservation' do
+        get :rate, { id: -1 }
+
+        expect(response).to redirect_to(new_reservation_path)
+      end
     end
 
   end
@@ -267,6 +308,14 @@ describe ReservationsController do
         put :rating, { id: reservation.to_param }
 
         expect(response).to render_template(:rate)
+      end
+    end
+
+    context 'when an nonexistent reservation' do
+      it 'redirects to new reservation' do
+        put :rating, { id: -1, :reservation => new_attributes }
+
+        expect(response).to redirect_to(new_reservation_path)
       end
     end
 
